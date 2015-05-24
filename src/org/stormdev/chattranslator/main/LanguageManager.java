@@ -149,6 +149,10 @@ public class LanguageManager implements org.stormdev.chattranslator.api.Language
 	}
 	
 	public boolean hasSetLang(UUID uuid){
+		if(data == null){
+			ChatTranslator.plugin.getLogger().warning("Chat Translator cannot function without a method of data storage enabled either in the config or by another plugin! No such data storage method is enabled!");
+			return false;
+		}
 		return data.hasValueSet(uuid);
 	}
 	
@@ -167,17 +171,29 @@ public class LanguageManager implements org.stormdev.chattranslator.api.Language
 	}
 	
 	public Lang getLanguage(UUID uuid){
+		if(data == null){
+			ChatTranslator.plugin.getLogger().warning("Chat Translator cannot function without a method of data storage enabled either in the config or by another plugin! No such data storage method is enabled!");
+			return ChatTranslator.DEFAULT_LANGUAGE;
+		}
 		return data.getValue(uuid);
 	}
 	
 	@Override
 	public void setLanguage(Player player, Lang lang){
+		if(data == null){
+			ChatTranslator.plugin.getLogger().warning("Chat Translator cannot function without a method of data storage enabled either in the config or by another plugin! No such data storage method is enabled!");
+			return;
+		}
 		setLanguage(player.getUniqueId(), lang);
 		player.removeMetadata(META, ChatTranslator.plugin);
 		player.setMetadata(META, new MetadataValue(lang, ChatTranslator.plugin));
 	}
 	
 	public void setLanguage(UUID uuid, Lang lang){
+		if(data == null){
+			ChatTranslator.plugin.getLogger().warning("Chat Translator cannot function without a method of data storage enabled either in the config or by another plugin! No such data storage method is enabled!");
+			return;
+		}
 		data.setValue(uuid, lang);
 	}
 	

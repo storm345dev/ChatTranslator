@@ -10,7 +10,7 @@ public class YandexRequestLimitExceededException extends YandexException {
 
 	@Override
 	public String getErrorMsg() {
-		return "You have reached the daily limit for requests (including calls of the detect method).";
+		return "(Yandex error, is the API key correct?) Error: You have reached the daily limit for requests (including calls of the detect method).";
 	}
 	
 }

@@ -20,7 +20,7 @@ public class YandexUnknownException extends YandexException {
 
 	@Override
 	public String getErrorMsg() {
-		return "Unspecified error";
+		return "(Yandex error, is the API key correct?) Error: Unspecified error";
 	}
 	
 }

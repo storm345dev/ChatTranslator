@@ -71,8 +71,6 @@ public class ChatTranslator extends JavaPlugin {
 			getLogger().log(Level.SEVERE, "Unknown default language! Using English instead!");
 			DEFAULT_LANGUAGE = Lang.ENGLISH;
 		}
-		mySQL = new MySQL(this, config.getString("SQL.jdbcurl"), config.getString("SQL.user"), config.getString("SQL.pass"));
-		SQL = new SQLManager(mySQL, this);
 		
 		if(API_KEY.equalsIgnoreCase("Get an API key FREE from http://api.yandex.com/key/form.xml?service=trnsl")
 				|| API_KEY.equalsIgnoreCase("Get an API key FREE from https://tech.yandex.com/keys/get/?service=trnsl")){
@@ -88,7 +86,14 @@ public class ChatTranslator extends JavaPlugin {
 		
 		DataStorage<Lang> ds = null;
 		if(config.getBoolean("SQL.enable")){
-			ds = new SQLLangDataStorage();
+			mySQL = new MySQL(this, config.getString("SQL.jdbcurl"), config.getString("SQL.user"), config.getString("SQL.pass"));
+			SQL = new SQLManager(mySQL, this);
+			if(mySQL.isConnected()){
+				ds = new SQLLangDataStorage();
+			}
+			else {
+				getLogger().warning("SQL connection failed! This will likely cause issues!");
+			}
 		}
 		else if(config.getBoolean("YAML.enable")){
 			File yamlFile = new File(getDataFolder()+File.separator+"languages.yml");
@@ -107,7 +112,7 @@ public class ChatTranslator extends JavaPlugin {
 		}
 		
 		if(ds == null){
-			getLogger().log(Level.WARNING, "NO data storage interface could be found! The plugin will not function properly unless another plugin is providing it!");
+			getLogger().log(Level.WARNING, "NO data storage interface could be found! The plugin will NOT function properly unless another plugin is providing it!");
 		}
 		languageManager = new LanguageManager(ds);
 		selectMenu = new LangSelectMenu();
@@ -121,7 +126,7 @@ public class ChatTranslator extends JavaPlugin {
 	
 	public static YandexConnection getTranslator(){
 		if(translateCon == null){
-			plugin.getLogger().log(Level.SEVERE, "IMPORTANT: No API KEY is set! Get an API key FREE from http://api.yandex.com/key/form.xml?service=trnsl and enter it in the CONFIG!");
+			plugin.getLogger().log(Level.SEVERE, "IMPORTANT: No API KEY is set! Get an API key FREE from https://tech.yandex.com/keys/get/?service=trnsl and enter it in the CONFIG!");
 			throw new RuntimeException("No API KEY!");
 		}
 		return translateCon;

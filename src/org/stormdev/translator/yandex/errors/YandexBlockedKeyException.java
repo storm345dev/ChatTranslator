@@ -10,7 +10,7 @@ public class YandexBlockedKeyException extends YandexException {
 
 	@Override
 	public String getErrorMsg() {
-		return "Invalid API Key";
+		return "(Yandex error, is the API key correct?) Error: Invalid API Key";
 	}
 	
 }
