@@ -37,7 +37,7 @@ public class ChatTranslator extends JavaPlugin {
 		plugin = this;
 		config = getConfig();
 		if(!config.contains("api_key")){
-			config.set("api_key", "Get an API key FREE from http://api.yandex.com/key/form.xml?service=trnsl");
+			config.set("api_key", "Get an API key FREE from https://tech.yandex.com/keys/get/?service=trnsl");
 		}
 		if(!config.contains("translateChat")){
 			config.set("translateChat", true);
@@ -74,8 +74,9 @@ public class ChatTranslator extends JavaPlugin {
 		mySQL = new MySQL(this, config.getString("SQL.jdbcurl"), config.getString("SQL.user"), config.getString("SQL.pass"));
 		SQL = new SQLManager(mySQL, this);
 		
-		if(API_KEY.equalsIgnoreCase("Get an API key FREE from http://api.yandex.com/key/form.xml?service=trnsl")){
-			getLogger().log(Level.SEVERE, "IMPORTANT: No API KEY is set! Get an API key FREE from http://api.yandex.com/key/form.xml?service=trnsl and enter it in the CONFIG!");
+		if(API_KEY.equalsIgnoreCase("Get an API key FREE from http://api.yandex.com/key/form.xml?service=trnsl")
+				|| API_KEY.equalsIgnoreCase("Get an API key FREE from https://tech.yandex.com/keys/get/?service=trnsl")){
+			getLogger().log(Level.SEVERE, "IMPORTANT: No API KEY is set! Get an API key FREE from https://tech.yandex.com/keys/get/?service=trnsl and enter it in the CONFIG!");
 			try {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
