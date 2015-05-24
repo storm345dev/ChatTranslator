@@ -13,6 +13,7 @@ import java.util.Scanner;
 import javax.net.ssl.HttpsURLConnection;
 
 import org.stormdev.chattranslator.api.Lang;
+import org.stormdev.chattranslator.main.ChatTranslator;
 import org.stormdev.translator.yandex.errors.YandexBlockedKeyException;
 import org.stormdev.translator.yandex.errors.YandexCharLimitExceededException;
 import org.stormdev.translator.yandex.errors.YandexException;
@@ -29,9 +30,11 @@ import com.google.gson.JsonParser;
 
 public class YandexConnection {
 	public String API_KEY = "NULL";
+	private boolean enabled = true;
 	
 	public YandexConnection(String API_KEY){
 		this.API_KEY = API_KEY;
+		this.enabled = ChatTranslator.ENABLE_TRANSLATION;
 	}
 	
 	public static void main(String[] args){
@@ -72,6 +75,10 @@ public class YandexConnection {
 	}
 	
 	public Lang getLang(String text) throws YandexUnsupportedLanguageException, YandexException, MalformedURLException, IOException{
+		if(!enabled){
+			return ChatTranslator.DEFAULT_LANGUAGE;
+		}
+		
 		JsonElement resp = getJSONResponse(getDetectUrl(text));
 		if(resp == null){
 			throw new YandexUnknownException();
@@ -97,6 +104,10 @@ public class YandexConnection {
 	}
 	
 	public String translate(Lang from, Lang to, String text) throws YandexException, MalformedURLException, IOException{
+		if(!enabled){
+			return text;
+		}
+		
 		JsonElement resp = getJSONResponse(getTranslateUrl(from, to, text));
 		if(resp == null){
 			throw new YandexUnknownException();

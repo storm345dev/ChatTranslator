@@ -21,6 +21,7 @@ public class ChatTranslator extends JavaPlugin {
 	
 	public static String API_KEY = "";
 	public static boolean TRANSLATE_CHAT = false;
+	public static boolean ENABLE_TRANSLATION = true;
 	public static String DEFAULT_LANG = "en";
 	public static Lang DEFAULT_LANGUAGE = Lang.ENGLISH;
 	public static TranslatorToolkit TOOLKIT = null;
@@ -41,6 +42,9 @@ public class ChatTranslator extends JavaPlugin {
 		}
 		if(!config.contains("translateChat")){
 			config.set("translateChat", true);
+		}
+		if(!config.contains("enableTranslator")){
+			config.set("enableTranslator", true);
 		}
 		if(!config.contains("defaultLang")){
 			config.set("defaultLang", "en");
@@ -65,6 +69,8 @@ public class ChatTranslator extends JavaPlugin {
 		API_KEY = config.getString("api_key");
 		TRANSLATE_CHAT = config.getBoolean("translateChat");
 		DEFAULT_LANG = config.getString("defaultLang");
+		ENABLE_TRANSLATION = config.getBoolean("enableTranslator");
+		
 		try {
 			DEFAULT_LANGUAGE = Lang.forShortString(DEFAULT_LANG);
 		} catch (YandexUnsupportedLanguageException e1) {
@@ -81,6 +87,9 @@ public class ChatTranslator extends JavaPlugin {
 			}
 		}
 		else {
+			if(!ENABLE_TRANSLATION){
+				getLogger().warning("Translator is disabled in the config! ChatTranslator won't be able to translate any text!");
+			}
 			translateCon = new YandexConnection(API_KEY);
 		}
 		
