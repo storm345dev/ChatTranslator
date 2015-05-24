@@ -19,7 +19,7 @@ public class DefaultMessageHandler implements MessageHandler {
 
 	@Override
 	public boolean overrideChatEvent() {
-		return true;
+		return ChatTranslator.TRANSLATE_CHAT;
 	}
 
 }
